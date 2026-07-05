@@ -1,0 +1,11 @@
+{
+  "name": "terminal-rpg",
+  "version": "0.1.0",
+  "description": "A turn-based fantasy RPG built in JavaScript for the terminal.",
+  "main": "prototype.js",
+  "scripts": {
+    "start": "node prototype.js"
+  },
+  "author": "Israel Quiroga",
+  "license": "MIT"
+}
