@@ -385,19 +385,7 @@ async function battle(player, enemies) {
     console.log("Enemies appear!");
 
     while (player.health > 0 && enemies.some(enemy => enemy.currentHealth > 0)) {
-        console.log("===== BATTLE STATS =====");
-        console.log(`${player.name} | HP: ${player.health} | Mana: ${player.mana} | Potions: ${player.potions} | Exp: ${player.exp} | Gold: ${player.gold}`);
-        console.log("------------------------");
-
-        for (let i = 0; i < enemies.length; i++) {
-            const enemy = enemies[i];
-
-            if (enemy.currentHealth > 0) {
-                console.log(`${i + 1}. ${enemy.name} (${enemy.currentHealth}/${enemy.maxHealth} HP)`);
-            } else {
-                console.log(`${i + 1}. ${enemy.name} (Defeated)`);
-            }
-        }
+        displayBattleStats(player, enemies);
 
         console.log("Choose an action:");
         console.log("1. Attack");
@@ -410,37 +398,23 @@ async function battle(player, enemies) {
         let chosenEnemy = null;
 
         if (action === "1" || action === "2" || action === "4") {
-            console.log("Choose an enemy:");
+            chosenEnemy = await chooseEnemy(enemies);
 
-            const enemyChoice = await getInput();
-            const enemyIndex = Number(enemyChoice) - 1;
-            chosenEnemy = enemies[enemyIndex];
-
-            if (!chosenEnemy || chosenEnemy.currentHealth <= 0) {
-                console.log("Invalid enemy choice. You lose your turn.");
+            if (!chosenEnemy) {
                 continue;
             }
         }
 
         if (action === "1") {
-            console.log("Choose a weapon:");
-
-            for (let i = 0; i < player.inventory.length; i++) {
-                const weapon = player.inventory[i];
-                console.log(`${i + 1}. ${weapon.name} (${weapon.damage} damage)`);
-            }
-
-            const weaponChoice = await getInput();
-            const weaponIndex = Number(weaponChoice) - 1;
-            const chosenWeapon = player.inventory[weaponIndex];
+            const chosenWeapon = await chooseWeapon(player);
 
             if (chosenWeapon) {
-                player.attack(chosenEnemy, chosenWeapon);
-                player.attackCount++;
-                isEnemyDefeated(player, chosenEnemy);
-            } else {
-                console.log("Invalid weapon choice. You lose your turn.");
+                continue;
             }
+            player.attack(chosenEnemy, chosenWeapon);
+            player.attackCount++;
+            isEnemyDefeated(player, chosenEnemy);
+        
         } else if (action === "2") {
             console.log("Choose a spell:");
 
@@ -521,4 +495,54 @@ function levelUp(player) {
         player.mana += 50;
         console.log(`${player.name} reached ${player.level}`);
     }
+}
+function displayBattleStats (player, enemies) {
+    console.log("===== BATTLE STATS =====");
+    console.log(`${player.name} | HP: ${player.health} | Mana: ${player.mana} | Potions: ${player.potions} | Exp: ${player.exp} | Gold: ${player.gold}`);
+    console.log("------------------------");
+
+    for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
+
+        if (enemy.currentHealth > 0) {
+                console.log(`${i + 1}. ${enemy.name} (${enemy.currentHealth}/${enemy.maxHealth} HP)`);
+        } else {
+                console.log(`${i + 1}. ${enemy.name} (Defeated)`);
+        }
+    }
+}
+
+async function chooseEnemy(enemies) {
+    console.log("Choose an enemy:");
+
+    const enemyChoice = await getInput();
+    const enemyIndex = Number(enemyChoice) - 1;
+    const chosenEnemy = enemies[enemyIndex];
+
+    if (!chosenEnemy || chosenEnemy.currentHealth <= 0) {
+        console.log("Invalid enemy choice. You lose your turn.");
+        return null;
+    }
+
+    return chosenEnemy;
+}
+
+async function chooseWeapon(player) {
+    console.log("Choose a weapon:");
+
+    for (let i = 0; i < player.inventory.length; i++) {
+        const weapon = player.inventory[i];
+        console.log(`${i + 1}. ${weapon.name} (${weapon.damage} damage)`);
+    }
+
+    const weaponChoice = await getInput();
+    const weaponIndex = Number(weaponChoice) - 1;
+    const chosenWeapon = player.inventory[weaponIndex];
+
+    if (!chosenWeapon) {
+        console.log("Invalid weapon choice. You lose your turn.");
+        return null;
+    }
+
+    return chosenWeapon;
 }
