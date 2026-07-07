@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.3.1
+
+### Added
+- Added Mana Potion usage during battle.
+- Added Mana Potions to battle stat displays.
+- Added maximum health and maximum mana limits.
+
+### Changed
+- Updated area level requirements to create odd-numbered main-area progression.
+- Positioned boss areas between main areas using even-numbered level requirements.
+
+### Fixed
+- Fixed Mana Potions restoring mana immediately when purchased instead of being added to inventory.
+- Fixed Health and Mana Potions allowing stats to exceed their maximum values.
+- Fixed unusable potions consuming the player's battle turn.
+
 ## [0.3.0] - 2026-07-07
 
 ### Added

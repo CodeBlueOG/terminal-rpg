@@ -1,7 +1,9 @@
 const player = {
     name: "Hero",
     health: 100,
+    maxHealth: 100,
     mana: 75,
+    maxMana: 75,
     level: 1,
     exp: 0,
     expToNextLevel: 100,
@@ -9,6 +11,7 @@ const player = {
     attackCount: 0,
     hasUsedLightBeam: false,
     potions: 3,
+    manaPotions: 1,
     inventory: [
     { name: "Sword", damage: 15, type: "weapon" },
     { name: "Bow", damage: 10, type: "weapon" },
@@ -61,14 +64,57 @@ const player = {
         }
     },
     heal: function() {
-        if (this.potions > 0) {
-            console.log(`${this.name} uses a potion to heal!`);
-            this.health += 50;
-            this.potions--;
-            console.log(`${this.name} now has ${this.health} health and ${this.potions} potions left.`);
-        } else {
-            console.log(`${this.name} has no potions left!`);
+        if (this.health >= this.maxHealth) {
+            console.log(`${this.name} is already at full health!`);
+            return false;
         }
+
+        if (this.potions <= 0) {
+            console.log(`${this.name} has no Potions left!`);
+            return false;
+        }
+
+        console.log(`${this.name} uses a Potion to heal!`);
+
+        this.health += 50;
+
+        if (this.health > this.maxHealth) {
+            this.health = this.maxHealth;
+        }
+
+        this.potions--;
+
+        console.log(`${this.name} now has ${this.health}/${this.maxHealth} health and ${this.potions} Potions left.`
+        );
+
+        return true;
+    },
+    healMana: function() {
+        if (this.mana >= this.maxMana) {
+            console.log(`${this.name} is already at full mana!`);
+            return false;
+        }
+
+        if (this.manaPotions <= 0) {
+            console.log(`${this.name} has no Mana Potions left!`);
+            return false;
+        }
+
+        console.log(`${this.name} uses a Mana Potion!`);
+
+        this.mana += 30;
+
+        if (this.mana > this.maxMana) {
+            this.mana = this.maxMana;
+        }
+
+        this.manaPotions--;
+
+        console.log(
+            `${this.name} now has ${this.mana}/${this.maxMana} mana and ${this.manaPotions} Mana Potions left.`
+        );
+
+        return true;
     }
 };
 module.exports = player;

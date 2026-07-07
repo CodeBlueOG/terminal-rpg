@@ -11,15 +11,16 @@ async function battle(player, enemies) {
         console.log("1. Attack");
         console.log("2. Cast Spell");
         console.log("3. Use Potion");
+        console.log("4. Use Mana Potion")
         if (player.attackCount >= 3) {
-            console.log("4. Special Attack (Ready)");
+            console.log("5. Special Attack (Ready)");
         } else {
-            console.log(`4. Special Attack (${player.attackCount}/3 charged)`);
+            console.log(`5. Special Attack (${player.attackCount}/3 charged)`);
         }
 
         const action = await getInput();
 
-        if (action === "4" && player.attackCount < 3) {
+        if (action === "5" && player.attackCount < 3) {
             console.log(
                 `${player.name}'s special attack is only ${player.attackCount}/3 charged.`
             );
@@ -28,7 +29,7 @@ async function battle(player, enemies) {
 
         let chosenEnemy = null;
 
-        if (action === "1" || action === "2" || action === "4") {
+        if (action === "1" || action === "2" || action === "5") {
             chosenEnemy = await chooseEnemy(enemies);
 
             if (!chosenEnemy) {
@@ -65,8 +66,16 @@ async function battle(player, enemies) {
                  console.log("Invalid spell choice. You lose your turn.");
             };
         } else if (action === "3") {
-            player.heal();
+            const potionUsed = player.heal();
+            if (!potionUsed) {
+                continue;
+            }
         } else if (action === "4") {
+            const potionUsed = player.healMana();
+            if (!potionUsed) {
+                continue;
+            }
+        } else if (action === "5") {
             player.specialAttack(chosenEnemy);
             isEnemyDefeated(player, chosenEnemy);
         } else {
@@ -138,7 +147,7 @@ function levelUp(player) {
 }
 function displayBattleStats (player, enemies) {
     console.log("===== BATTLE STATS =====");
-    console.log(`${player.name} | HP: ${player.health} | Mana: ${player.mana} | Potions: ${player.potions} | XP: ${player.exp}/${player.expToNextLevel} | Gold: ${player.gold}`);
+    console.log(`${player.name} | HP: ${player.health} | Mana: ${player.mana} | Potions: ${player.potions} | Mana Potions: ${player.manaPotions} | XP: ${player.exp}/${player.expToNextLevel} | Gold: ${player.gold}`);
     console.log("------------------------");
 
         const livingEnemies = enemies.filter(

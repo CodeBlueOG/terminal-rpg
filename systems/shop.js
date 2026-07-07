@@ -62,8 +62,8 @@ async function shop(player) {
             player.potions++;
             console.log(`${player.name} bought a Health Potion!`);
         } else if (chosenItem.type === "manaPotion") {
-            player.mana += chosenItem.manaAmount;
-            console.log(`${player.name} restored ${chosenItem.manaAmount} mana!`);
+            player.manaPotions ++
+            console.log(`${player.name} bought a Mana Potion!`)
         }
     }
 }
