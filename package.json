@@ -1,6 +1,6 @@
 {
   "name": "terminal-rpg",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A turn-based fantasy RPG built in JavaScript for the terminal.",
   "main": "prototype.js",
   "scripts": {
