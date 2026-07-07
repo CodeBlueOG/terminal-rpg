@@ -4,6 +4,7 @@ const player = {
     mana: 75,
     level: 1,
     exp: 0,
+    expToNextLevel: 100,
     gold: 0,
     attackCount: 0,
     potions: 3,

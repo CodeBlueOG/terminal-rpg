@@ -119,17 +119,26 @@ function isEnemyDefeated(player, enemy) {
     return false;
 }
 function levelUp(player) {
-    while (player.exp >= 100) {
-        player.exp -= 100;
+    while (player.exp >= player.expToNextLevel) {
+        player.exp -= player.expToNextLevel;
         player.level++;
+
+        player.expToNextLevel = Math.floor(
+            player.expToNextLevel * 1.5
+        );
+
         player.health += 100;
         player.mana += 50;
-        console.log(`${player.name} reached ${player.level}`);
+
+        console.log(`${player.name} reached level ${player.level}!`);
+        console.log(
+            `Next level requires ${player.expToNextLevel} XP.`
+        );
     }
 }
 function displayBattleStats (player, enemies) {
     console.log("===== BATTLE STATS =====");
-    console.log(`${player.name} | HP: ${player.health} | Mana: ${player.mana} | Potions: ${player.potions} | Exp: ${player.exp} | Gold: ${player.gold}`);
+    console.log(`${player.name} | HP: ${player.health} | Mana: ${player.mana} | Potions: ${player.potions} | XP: ${player.exp}/${player.expToNextLevel} | Gold: ${player.gold}`);
     console.log("------------------------");
 
         const livingEnemies = enemies.filter(
