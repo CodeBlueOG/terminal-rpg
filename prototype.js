@@ -333,43 +333,43 @@ console.log(
 
 async function travel(player, areas) {
     while (player.health > 0) {
+        const unlockedAreas = areas.filter(
+            area => player.level >= area.requiredLevel
+        );
+
         console.log("Where would you like to go?");
 
-        for (let i = 0; i < areas.length; i++) {
-            const area = areas[i];
+        for (let i = 0; i < unlockedAreas.length; i++) {
+            const area = unlockedAreas[i];
 
-            if (player.level >= area.requiredLevel) {
-                console.log(`${i + 1}. ${area.name} - Level ${area.requiredLevel}`);
-            } else {
-                console.log(`${i + 1}. ${area.name} - Level ${area.requiredLevel} LOCKED`);
-            }
+            console.log(
+                `${i + 1}. ${area.name} - Level ${area.requiredLevel}`
+            );
         }
 
-        console.log("5. Shop");
-        console.log("6. Quit Game");
+        const shopOption = unlockedAreas.length + 1;
+        const quitOption = unlockedAreas.length + 2;
 
-        const choice = await getInput();
+        console.log(`${shopOption}. Shop`);
+        console.log(`${quitOption}. Quit Game`);
 
-        if (choice === "5") {
+        const choice = Number(await getInput());
+
+        if (choice === shopOption) {
             await shop(player);
             continue;
         }
 
-        if (choice === "6") {
+        if (choice === quitOption) {
             console.log("Thanks for playing!");
             return;
         }
 
-        const areaIndex = Number(choice) - 1;
-        const chosenArea = areas[areaIndex];
+        const areaIndex = choice - 1;
+        const chosenArea = unlockedAreas[areaIndex];
 
         if (!chosenArea) {
             console.log("Invalid choice.");
-            continue;
-        }
-
-        if (player.level < chosenArea.requiredLevel) {
-            console.log(`${player.name} is not strong enough to enter ${chosenArea.name}.`);
             continue;
         }
 
@@ -391,9 +391,20 @@ async function battle(player, enemies) {
         console.log("1. Attack");
         console.log("2. Cast Spell");
         console.log("3. Use Potion");
-        console.log("4. Special Attack");
+        if (player.attackCount >= 3) {
+            console.log("4. Special Attack (Ready)");
+        } else {
+            console.log(`4. Special Attack (${player.attackCount}/3 charged)`);
+        }
 
         const action = await getInput();
+
+        if (action === "4" && player.attackCount < 3) {
+            console.log(
+                `${player.name}'s special attack is only ${player.attackCount}/3 charged.`
+            );
+            continue;
+        }
 
         let chosenEnemy = null;
 
@@ -408,7 +419,7 @@ async function battle(player, enemies) {
         if (action === "1") {
             const chosenWeapon = await chooseWeapon(player);
 
-            if (chosenWeapon) {
+            if (!chosenWeapon) {
                 continue;
             }
             player.attack(chosenEnemy, chosenWeapon);
@@ -501,23 +512,33 @@ function displayBattleStats (player, enemies) {
     console.log(`${player.name} | HP: ${player.health} | Mana: ${player.mana} | Potions: ${player.potions} | Exp: ${player.exp} | Gold: ${player.gold}`);
     console.log("------------------------");
 
-    for (let i = 0; i < enemies.length; i++) {
-        const enemy = enemies[i];
+        const livingEnemies = enemies.filter(
+            enemy => enemy.currentHealth > 0
+        );
 
-        if (enemy.currentHealth > 0) {
-                console.log(`${i + 1}. ${enemy.name} (${enemy.currentHealth}/${enemy.maxHealth} HP)`);
-        } else {
-                console.log(`${i + 1}. ${enemy.name} (Defeated)`);
+        for (let i = 0; i < livingEnemies.length; i++) {
+            const enemy = livingEnemies[i];
+
+            console.log(
+                `${i + 1}. ${enemy.name} (${enemy.currentHealth}/${enemy.maxHealth} HP)`
+            );
         }
     }
-}
-
 async function chooseEnemy(enemies) {
+    const livingEnemies = enemies.filter(
+        enemy => enemy.currentHealth > 0
+    );
+
+    if (livingEnemies.length === 1) {
+        console.log(`Targeting ${livingEnemies[0].name}.`);
+        return livingEnemies[0];
+    }
+
     console.log("Choose an enemy:");
 
     const enemyChoice = await getInput();
     const enemyIndex = Number(enemyChoice) - 1;
-    const chosenEnemy = enemies[enemyIndex];
+    const chosenEnemy = livingEnemies[enemyIndex];
 
     if (!chosenEnemy || chosenEnemy.currentHealth <= 0) {
         console.log("Invalid enemy choice. You lose your turn.");
