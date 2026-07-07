@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0] - 2026-07-07
+
+### Added
+
+* Added the first story and progression system.
+* Added timed story text playback.
+* Added one-time story event tracking.
+* Added opening story sequence before and after character naming.
+* Added Lost Forest introduction story event.
+* Added Dawnshard awakening sequence.
+* Added player story-state tracking for first use of Charged Light Beam.
+* Added story events triggered by area progression and player actions.
+
+### Changed
+
+* Updated the opening of the game to introduce The Dimming and the mysterious light.
+* Changed Dawnshard discovery so the shard is already within the player and awakens after the first Charged Light Beam use.
+
 ## v0.2.0
 
 ### Added

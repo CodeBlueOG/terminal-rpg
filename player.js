@@ -7,6 +7,7 @@ const player = {
     expToNextLevel: 100,
     gold: 0,
     attackCount: 0,
+    hasUsedLightBeam: false,
     potions: 3,
     inventory: [
     { name: "Sword", damage: 15, type: "weapon" },
@@ -48,6 +49,7 @@ const player = {
         if (this.attackCount >= 3) {
             console.log(`${this.name} uses a special attack on ${enemies.name}!`);
             console.log(`${this.name} uses charged light beam on ${enemies.name}!`);
+            this.hasUsedLightBeam = true;
             enemies.currentHealth -= 100;
             if (enemies.currentHealth < 0) {
                 enemies.currentHealth = 0;

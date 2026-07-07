@@ -6,6 +6,9 @@ const getRandomNumber = require("../utils/random");
 const shop = require("./shop");
 const battle = require("./battle");
 
+const storyEvents = require("../data/story");
+const { playStoryOnce } = require("./story");
+
 function generateEnemies(area) {
     const enemyCount = getRandomNumber(area.minEnemies, area.maxEnemies);
     const enemies = [];
@@ -70,9 +73,23 @@ async function travel(player, areas) {
 
         console.log(`${player.name} enters ${chosenArea.name}.`);
 
+        if (chosenArea.name === "Lost Forest") {
+            await playStoryOnce("lostForest", storyEvents.lostForest);
+        }
+
         const enemies = generateEnemies(chosenArea);
 
         await battle(player, enemies);
+            if (
+            player.health > 0 &&
+            chosenArea.name === "Lost Forest" &&
+            player.hasUsedLightBeam
+            ) {
+                await playStoryOnce(
+                "dawnshardDiscovery",
+                storyEvents.dawnshardDiscovery
+                );
+            }
     }
 }
 module.exports = travel;
