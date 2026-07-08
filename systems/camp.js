@@ -1,5 +1,6 @@
 const getInput = require("../utils/input");
 const shop = require("./shop");
+const displayInventory = require("./inventory");
 
 async function campMenu(player) {
     let atCamp = true;
@@ -32,9 +33,8 @@ async function campMenu(player) {
                 `\n${player.name} | HP: ${player.health}/${player.maxHealth} | Mana: ${player.mana}/${player.maxMana} | Level: ${player.level} | Exp: ${player.exp} | Gold: ${player.gold}`
             );
         } else if (choice === "3") {
-            console.log("\nInventory:");
-            console.log(`Health Potions: ${player.potions}`);
-            console.log(`Mana Potions: ${player.manaPotions}`);
+            displayInventory(player);
+
         } else if (choice === "4") {
             if (player.camp?.merchantUnlocked) {
                 await shop(player);
