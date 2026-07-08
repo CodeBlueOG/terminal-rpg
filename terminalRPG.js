@@ -1,16 +1,13 @@
 const player = require("./player");
 
-const enemyTypes = require("./data/enemies");
-const { areas, bossArea } = require("./data/areas");
+
+const { areas } = require("./data/areas");
 
 const storyEvents = require("./data/story");
 const { playStory } = require("./systems/story");
 
 const getInput = require("./utils/input");
-const getRandomNumber = require("./utils/random");
 
-const shop = require("./systems/shop");
-const battle = require("./systems/battle");
 const travel = require("./systems/travel");
 
 async function startGame() {
