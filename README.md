@@ -58,7 +58,7 @@ cd terminal-rpg
 Run the game:
 
 ```bash
-node prototype.js
+node terminalRPG.js
 ```
 
 ## Why This Project?
