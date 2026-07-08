@@ -12,6 +12,9 @@ const player = {
     hasUsedLightBeam: false,
     potions: 3,
     manaPotions: 1,
+    camp: {
+        merchantUnlocked: false
+    },
     inventory: [
     { name: "Sword", damage: 15, type: "weapon" },
     { name: "Bow", damage: 10, type: "weapon" },
