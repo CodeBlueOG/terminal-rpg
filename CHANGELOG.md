@@ -1,5 +1,37 @@
 # Changelog
 
+# Changelog
+
+## [0.4.0] - 2026-07-12
+
+### Added
+
+* Added a main menu with New Game, Continue Game, and Exit options.
+* Added save-game loading from `saveData.json`.
+* Added the ability to continue a saved game from The Last Campfire.
+* Added a Save Game option to the camp menu.
+
+### Changed
+
+* Loaded save data now restores the existing player object using `Object.assign()`.
+* New games now begin through the main menu.
+
+### Fixed
+
+* Fixed the misspelled `inventory.js` filename that prevented the inventory module from loading.
+
+## [0.3.2]
+
+### Added
+
+* Added The Last Campfire menu.
+* Added resting to restore health and mana.
+* Added player stat viewing from camp.
+* Added an inventory menu.
+* Added the camp merchant.
+* Added merchant unlocking after game progression.
+* Moved the shop system into the camp.
+
 ## v0.3.1
 
 ### Added
