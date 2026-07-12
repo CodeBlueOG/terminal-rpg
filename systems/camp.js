@@ -1,6 +1,7 @@
 const getInput = require("../utils/input");
 const shop = require("./shop");
-const displayInventory = require("./inventory");
+const { viewInventory } = require("./inventory");
+const { saveGame } = require("./save");
 
 async function campMenu(player) {
     let atCamp = true;
@@ -20,6 +21,7 @@ async function campMenu(player) {
         }
 
         console.log("5. Continue Adventure");
+        console.log("6. Save Game");
 
         const choice = await getInput();
 
@@ -33,7 +35,7 @@ async function campMenu(player) {
                 `\n${player.name} | HP: ${player.health}/${player.maxHealth} | Mana: ${player.mana}/${player.maxMana} | Level: ${player.level} | Exp: ${player.exp} | Gold: ${player.gold}`
             );
         } else if (choice === "3") {
-            displayInventory(player);
+            viewInventory(player);
 
         } else if (choice === "4") {
             if (player.camp?.merchantUnlocked) {
@@ -43,6 +45,8 @@ async function campMenu(player) {
             }
         } else if (choice === "5") {
             atCamp = false;
+        } else if (choice === "6") {
+            saveGame(player);
         } else {
             console.log("\nInvalid choice.");
         }
